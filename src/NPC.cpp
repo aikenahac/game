@@ -53,7 +53,6 @@ void NPC::detectCollision(SDL_Rect enemy) {
   SDL_bool collision = SDL_HasIntersection(&render, &enemy);
 
   if (collision) {
-    Logger::warning("Colliding with the enemy!");
     dead = true;
   }
 }
@@ -81,19 +80,15 @@ void NPC::movement() {
 
 void NPC::detectBorderCollision() {
   if (render.x < 0) {
-    Logger::warning("Colliding with the left border!");
     render.x = 0;
   }
   if (render.x > WIDTH - SPRITE_SIZE) {
-    Logger::warning("Colliding with the right border!");
     render.x = WIDTH - SPRITE_SIZE;
   }
   if (render.y < 0) {
-    Logger::warning("Colliding with the upper border!");
     render.y = 0;
   }
   if (render.y > HEIGHT - SPRITE_SIZE) {
-    Logger::warning("Colliding with the lower border!");
     render.y = HEIGHT - SPRITE_SIZE;
   }
 }

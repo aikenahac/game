@@ -55,6 +55,7 @@ void Game::run() {
 	}
 
   while(isRunning) {
+
     while (SDL_PollEvent(&event)) {
 			if (event.type == SDL_QUIT) {
 				isRunning = false;
@@ -66,7 +67,11 @@ void Game::run() {
 
 		handleKeyboard();
 
+		healthBar.initialize(renderer, player);
+
 		map.draw();
+
+		healthBar.draw();
 
 		for (auto ally = allies.begin(); ally != allies.end(); ally++) {
 			ally->draw();

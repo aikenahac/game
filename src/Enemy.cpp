@@ -19,7 +19,7 @@ Enemy::Enemy() {
 }
 
 void Enemy::initialize(SDL_Renderer* renderer) {
-  Logger::okay("Initializing an ally!");
+  Logger::okay("Initializing an enemy!");
 
 	this->renderer = renderer;
 	
@@ -27,7 +27,6 @@ void Enemy::initialize(SDL_Renderer* renderer) {
 }
 
 void Enemy::loadSprite() {
-  Logger::okay("Loading ally textures!");
 
   SDL_Surface* ally;
 

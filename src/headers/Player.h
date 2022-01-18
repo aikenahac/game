@@ -22,30 +22,30 @@ class Player {
 			"right2.bmp"
 		};
 
-	SDL_Rect render = {
-		100,
-		100,
-		SPRITE_SIZE,
-		SPRITE_SIZE
-	};
+		SDL_Rect render = {
+			100,
+			100,
+			SPRITE_SIZE,
+			SPRITE_SIZE
+		};
 
-	SDL_Renderer* renderer;
-	SDL_Texture* assets[10];
+		SDL_Renderer* renderer;
+		SDL_Texture* assets[10];
 
-	bool isWalking = false;
+		bool isWalking = false;
 
-	uint8_t direction = 0;
-	uint8_t frame = 0;
+		uint8_t direction = 0;
+		uint8_t frame = 0;
 
-	int speed = WALK_SPEED;
+		int speed = WALK_SPEED;
 
-	int lives = 3;
+		int lives = 3;
 
-	std::chrono::system_clock::time_point lastFrame = std::chrono::system_clock::now();
-	std::chrono::system_clock::time_point timeNow;
-  
-  void loadPlayerSprite();
-	void detectBorderCollision();
+		std::chrono::system_clock::time_point lastFrame = std::chrono::system_clock::now();
+		std::chrono::system_clock::time_point timeNow;
+		
+		void loadPlayerSprite();
+		void detectBorderCollision();
 
   public:
     Player();
@@ -65,5 +65,7 @@ class Player {
 		void removeLife();
 		int getLives();
 
+		void resetPosition();
 		void detectCollision(SDL_Rect);
+		
 };

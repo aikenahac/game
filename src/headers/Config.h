@@ -7,3 +7,5 @@
 
 #define WALK_SPEED 2
 #define SPRINT_SPEED 4
+
+#define HEART_SIZE 40

@@ -89,25 +89,20 @@ void Player::walking(bool isWalking) {
 
 void Player::detectBorderCollision() {
   if (render.x < 0) {
-    Logger::warning("Colliding with the left border!");
     render.x = 0;
   }
   if (render.x > WIDTH - SPRITE_SIZE) {
-    Logger::warning("Colliding with the right border!");
     render.x = WIDTH - SPRITE_SIZE;
   }
   if (render.y < 0) {
-    Logger::warning("Colliding with the upper border!");
     render.y = 0;
   }
   if (render.y > HEIGHT - SPRITE_SIZE) {
-    Logger::warning("Colliding with the lower border!");
     render.y = HEIGHT - SPRITE_SIZE;
   }
 }
 
 void Player::setSpeed(int speed) {
-  if (speed == SPRINT_SPEED) Logger::info("Player sprinting!");
   this->speed = speed;
 }
 
@@ -158,6 +153,25 @@ void Player::detectCollision(SDL_Rect enemy) {
   if (collision) {
     Logger::warning("Colliding with the enemy!");
     removeLife();
+    resetPosition();
     Logger::info("Lives: " + std::to_string(lives));
   }
+}
+
+void Player::resetPosition() {
+  int minX = 100;
+  int maxX = WIDTH + 1;
+
+  int minY = 100;
+  int maxY = HEIGHT + 1;
+
+  int x = rand() % (maxX - minX) + minX;
+  int y = rand() % (maxY - minY) + minY;
+
+  this->render = {
+    x,
+    y,
+    SPRITE_SIZE,
+    SPRITE_SIZE
+  };
 }

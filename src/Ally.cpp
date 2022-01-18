@@ -27,8 +27,6 @@ void Ally::initialize(SDL_Renderer* renderer) {
 }
 
 void Ally::loadSprite() {
-  Logger::okay("Loading ally textures!");
-
   SDL_Surface* ally;
 
   char temp[40];
