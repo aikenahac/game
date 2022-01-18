@@ -1,0 +1,11 @@
+# IDE files
+.vscode/
+.idea/
+
+# Build files
+*
+!/**/
+!*.*
+!Makefile
+*.d
+obj/*
