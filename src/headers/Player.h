@@ -10,19 +10,24 @@
 class Player {
   private:
     char paths[10][11] = {
-		"down1.bmp",
-		"down2.bmp",
-		"down3.bmp",
-		"up1.bmp",
-		"up2.bmp",
-		"up3.bmp",
-		"left1.bmp",
-		"left2.bmp",
-		"right1.bmp",
-		"right2.bmp"
-	};
+			"down1.bmp",
+			"down2.bmp",
+			"down3.bmp",
+			"up1.bmp",
+			"up2.bmp",
+			"up3.bmp",
+			"left1.bmp",
+			"left2.bmp",
+			"right1.bmp",
+			"right2.bmp"
+		};
 
-	SDL_Rect render = {379, 274, 42, 52};
+	SDL_Rect render = {
+		100,
+		100,
+		SPRITE_SIZE,
+		SPRITE_SIZE
+	};
 
 	SDL_Renderer* renderer;
 	SDL_Texture* assets[10];
@@ -33,6 +38,8 @@ class Player {
 	uint8_t frame = 0;
 
 	int speed = WALK_SPEED;
+
+	int lives = 3;
 
 	std::chrono::system_clock::time_point lastFrame = std::chrono::system_clock::now();
 	std::chrono::system_clock::time_point timeNow;
@@ -55,4 +62,8 @@ class Player {
 		void moveRight();
 
 		void setSpeed(int);
+		void removeLife();
+		int getLives();
+
+		void detectCollision(SDL_Rect);
 };

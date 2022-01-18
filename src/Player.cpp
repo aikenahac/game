@@ -142,3 +142,22 @@ void Player::moveRight() {
   this->render.x += speed;
   detectBorderCollision();
 }
+
+int Player::getLives() {
+  return lives;
+}
+
+void Player::removeLife() {
+  lives--;
+}
+
+void Player::detectCollision(SDL_Rect enemy) {
+
+  SDL_bool collision = SDL_HasIntersection(&render, &enemy);
+
+  if (collision) {
+    Logger::warning("Colliding with the enemy!");
+    removeLife();
+    Logger::info("Lives: " + std::to_string(lives));
+  }
+}

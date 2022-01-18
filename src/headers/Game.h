@@ -2,9 +2,13 @@
 
 #include <SDL2/SDL.h>
 #include <iostream>
+#include <vector>
+
 #include "Logger.h"
 #include "Config.h"
 #include "Player.h"
+#include "Ally.h"
+#include "Enemy.h"
 #include "Map.h"
 
 class Game {
@@ -16,6 +20,7 @@ class Game {
     bool isRunning;
 
     Player player;
+
     Map map;
 
     bool keys[322] = { false };

@@ -35,6 +35,24 @@ void Game::run() {
 	player.initialize(renderer);
 	map.initialize(renderer);
 
+	std::vector<Ally> allies;
+	std::vector<Enemy> enemies;
+
+	for (int i = 0; i < 3; i++) {
+		Ally ally = Ally();
+
+		ally.initialize(renderer);
+
+		allies.push_back(ally);
+	}
+
+	for (int i = 0; i < 4; i++) {
+		Enemy enemy = Enemy();
+
+		enemy.initialize(renderer);
+
+		enemies.push_back(enemy);
+	}
 
   while(isRunning) {
     while (SDL_PollEvent(&event)) {
@@ -49,6 +67,28 @@ void Game::run() {
 		handleKeyboard();
 
 		map.draw();
+
+		for (auto ally = allies.begin(); ally != allies.end(); ally++) {
+			ally->draw();
+		}
+
+		for (auto ally = allies.begin(); ally != allies.end(); ally++) {
+			ally->movement();
+			for (auto enemy = enemies.begin(); enemy != enemies.end(); enemy++) {
+				SDL_Rect enemyRect = enemy->getRect();
+				ally->detectCollision(enemyRect);
+			}
+		}
+
+		for (auto enemy = enemies.begin(); enemy != enemies.end(); enemy++) {
+			enemy->draw();
+		}
+
+		for (auto enemy = enemies.begin(); enemy != enemies.end(); enemy++) {
+			enemy->movement();
+			player.detectCollision(enemy->getRect());
+		}
+
 		player.draw();
 
     SDL_RenderPresent(renderer);
