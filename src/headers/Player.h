@@ -67,5 +67,6 @@ class Player {
 
 		void resetPosition();
 		void detectCollision(SDL_Rect);
-		
+
+		void resetLives();
 };

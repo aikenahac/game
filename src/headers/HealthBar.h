@@ -37,4 +37,6 @@ class HealthBar {
   public:
     void initialize(SDL_Renderer*, Player);
     void draw();
+
+    void setLives(int);
 };

@@ -36,7 +36,6 @@ void HealthBar::initialize(SDL_Renderer* renderer, Player player) {
 
   for (int i = 0; i < lives; i++) {
     hearts[i].initialize(renderer, WIDTH - 60 - i*40, 10);
-    // hearts[i].initialize(renderer, 600, 600 - i*50);
   }
 }
 
@@ -44,4 +43,8 @@ void HealthBar::draw() {
   for (int i = 0; i < lives; i++) {
     hearts[i].draw();
   }
+}
+
+void HealthBar::setLives(int lives) {
+  this->lives = lives;
 }

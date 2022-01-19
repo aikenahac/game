@@ -2,118 +2,182 @@
 #include <SDL2/SDL.h>
 
 Game::Game() {
-	if (SDL_Init(SDL_INIT_EVERYTHING) < 0) {
-		Logger::error("SDL crashed and burned!");
-		Logger::error("SDL ERROR: ");
-		std::cout << SDL_GetError() << '\n';
-		throw "SDL INIT ERROR";
-	} else {
-		window = SDL_CreateWindow(
-			"Ne Testiranju na Živalih - Aiken Tine Ahac",
-			SDL_WINDOWPOS_CENTERED,
-			SDL_WINDOWPOS_CENTERED,
-			WIDTH,
-			HEIGHT,
-			SDL_WINDOW_SHOWN
-		);
+  if (SDL_Init(SDL_INIT_EVERYTHING) < 0) {
+    Logger::error("SDL crashed and burned!");
+    Logger::error("SDL ERROR: ");
+    std::cout << SDL_GetError() << '\n';
+    throw "SDL INIT ERROR";
+  } else {
+    window = SDL_CreateWindow(
+        "Ne Testiranju na Živalih - Aiken Tine Ahac",
+        SDL_WINDOWPOS_CENTERED,
+        SDL_WINDOWPOS_CENTERED,
+        WIDTH,
+        HEIGHT,
+        SDL_WINDOW_SHOWN);
 
-		if (window == NULL) {
-			Logger::error("SDL window error!");
-			std::cout << SDL_GetError() << '\n';
-			Logger::error("Window error");
+    if (window == NULL) {
+      Logger::error("SDL window error!");
+      std::cout << SDL_GetError() << '\n';
+      Logger::error("Window error");
     }
-		
-		renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
 
-		isRunning = true;
-	}
+    renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
+
+    isRunning = true;
+  }
 }
 
 void Game::run() {
   srand(time(NULL));
 
-	player.initialize(renderer);
-	map.initialize(renderer);
+	healthBar.initialize(renderer, player);
 
-	std::vector<Ally> allies;
-	std::vector<Enemy> enemies;
+  allies.clear();
+  enemies.clear();
 
-	for (int i = 0; i < 3; i++) {
-		Ally ally = Ally();
+	menu.initialize(renderer);
+	goScreen.initialize(renderer);
 
-		ally.initialize(renderer);
+  player.initialize(renderer);
+  map.initialize(renderer);
 
-		allies.push_back(ally);
-	}
+  for (int i = 0; i < 3; i++) {
+    Ally ally = Ally();
 
-	for (int i = 0; i < 4; i++) {
-		Enemy enemy = Enemy();
+    ally.initialize(renderer);
 
-		enemy.initialize(renderer);
+    allies.push_back(ally);
+  }
 
-		enemies.push_back(enemy);
-	}
+  for (int i = 0; i < 4; i++) {
+    Enemy enemy = Enemy();
 
-  while(isRunning) {
+    enemy.initialize(renderer);
+
+    enemies.push_back(enemy);
+  }
+
+  while (isRunning) {
 
     while (SDL_PollEvent(&event)) {
-			if (event.type == SDL_QUIT) {
-				isRunning = false;
-			}
-			else if (event.key.keysym.sym == SDLK_LSHIFT && event.key.keysym.sym == SDLK_RSHIFT) continue;
-			else if(event.type == SDL_KEYDOWN) keys[event.key.keysym.sym] = true;
-			else if(event.type == SDL_KEYUP) keys[event.key.keysym.sym] = false;
-		}
+      if (event.type == SDL_QUIT) {
+        isRunning = false;
+      } else if (event.key.keysym.sym == SDLK_LSHIFT && event.key.keysym.sym == SDLK_RSHIFT)
+        continue;
 
-		handleKeyboard();
+			else if (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_e) menu.moveDown();
+			else if (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_q) menu.moveUp();
+			else if (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_RETURN) select();
 
-		healthBar.initialize(renderer, player);
+      else if (event.type == SDL_KEYDOWN)
+        keys[event.key.keysym.sym] = true;
+      else if (event.type == SDL_KEYUP)
+        keys[event.key.keysym.sym] = false;
+    }
 
-		map.draw();
+    handleKeyboard();
 
-		healthBar.draw();
-
-		for (auto ally = allies.begin(); ally != allies.end(); ally++) {
-			ally->draw();
-		}
-
-		for (auto ally = allies.begin(); ally != allies.end(); ally++) {
-			ally->movement();
-			for (auto enemy = enemies.begin(); enemy != enemies.end(); enemy++) {
-				SDL_Rect enemyRect = enemy->getRect();
-				ally->detectCollision(enemyRect);
-			}
-		}
-
-		for (auto enemy = enemies.begin(); enemy != enemies.end(); enemy++) {
-			enemy->draw();
-		}
-
-		for (auto enemy = enemies.begin(); enemy != enemies.end(); enemy++) {
-			enemy->movement();
-			player.detectCollision(enemy->getRect());
-		}
-
-		player.draw();
+    if (playing) setScreen(GAME_SCREEN);
+		else if (justDied) setScreen(GAME_OVER_SCREEN);
+		else setScreen(HOME_SCREEN);
 
     SDL_RenderPresent(renderer);
   }
 
-  SDL_DestroyRenderer(renderer);
-	SDL_DestroyWindow(window);
-	SDL_Quit();
+  this->clean();
 }
 
 void Game::handleKeyboard() {
-	if(keys[SDLK_w]) player.moveUp();
-	if(keys[SDLK_s]) player.moveDown();
-	if(keys[SDLK_a]) player.moveLeft();
-	if(keys[SDLK_d]) player.moveRight();
+  if (keys[SDLK_w]) player.moveUp();
+  if (keys[SDLK_s]) player.moveDown();
+  if (keys[SDLK_a]) player.moveLeft();
+  if (keys[SDLK_d]) player.moveRight();
 
-	if (keys[SDLK_LESS]) player.setSpeed(SPRINT_SPEED);
-	if (!keys[SDLK_LESS]) player.setSpeed(WALK_SPEED);
+  if (keys[SDLK_LESS]) player.setSpeed(SPRINT_SPEED);
+  if (!keys[SDLK_LESS]) player.setSpeed(WALK_SPEED);
 
-	if(!keys[SDLK_w] && !keys[SDLK_s] && !keys[SDLK_a] && !keys[SDLK_d]) {
-		player.walking(false);
+	if (keys[SDLK_c]) {
+		player.resetLives();
+		justDied = false;
 	}
+
+  if (!keys[SDLK_w] && !keys[SDLK_s] && !keys[SDLK_a] && !keys[SDLK_d]) {
+    player.walking(false);
+  }
+}
+
+void Game::gameScreen() {
+  map.draw();
+
+  healthBar.draw();
+
+  for (auto ally = allies.begin(); ally != allies.end(); ally++) {
+    ally->draw();
+  }
+
+  for (auto ally = allies.begin(); ally != allies.end(); ally++) {
+    ally->movement();
+    for (auto enemy = enemies.begin(); enemy != enemies.end(); enemy++) {
+      SDL_Rect enemyRect = enemy->getRect();
+      ally->detectCollision(enemyRect);
+    }
+  }
+
+  for (auto enemy = enemies.begin(); enemy != enemies.end(); enemy++) {
+    enemy->draw();
+  }
+
+  for (auto enemy = enemies.begin(); enemy != enemies.end(); enemy++) {
+    enemy->movement();
+    player.detectCollision(enemy->getRect());
+
+		healthBar.setLives(player.getLives());
+
+		if (player.getLives() == 0) gameOver();
+  }
+
+  player.draw();
+}
+
+void Game::setScreen(int screen) {
+  switch (screen) {
+    case HOME_SCREEN:
+			SDL_RenderClear(renderer);
+			menu.draw();
+      break;
+    case GAME_OVER_SCREEN:
+			SDL_RenderClear(renderer);
+      goScreen.draw();
+      break;
+    case GAME_SCREEN:
+			SDL_RenderClear(renderer);
+      gameScreen();
+      break;
+  }
+}
+
+void Game::select() {
+	switch (menu.getSelection()) {
+		case START:
+			playing = true;
+			break;
+		case LOAD_REPLAY:
+			isRunning = false;
+			break;
+		case QUIT:
+			isRunning = false;
+			break;
+	}
+}
+
+void Game::gameOver() {
+	playing = false;
+	justDied = true;
+}
+
+void Game::clean() {
+	SDL_DestroyRenderer(renderer);
+	SDL_DestroyWindow(window);
+	SDL_Quit();
 }

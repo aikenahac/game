@@ -144,6 +144,10 @@ int Player::getLives() {
 
 void Player::removeLife() {
   lives--;
+
+  if (lives == 0) {
+    Logger::error("Player has no lives left!");
+  }
 }
 
 void Player::detectCollision(SDL_Rect enemy) {
@@ -174,4 +178,8 @@ void Player::resetPosition() {
     SPRITE_SIZE,
     SPRITE_SIZE
   };
+}
+
+void Player::resetLives() {
+  lives = 3;
 }

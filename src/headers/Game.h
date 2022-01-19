@@ -4,13 +4,15 @@
 #include <iostream>
 #include <vector>
 
-#include "Logger.h"
-#include "Config.h"
-#include "Player.h"
 #include "Ally.h"
+#include "Config.h"
 #include "Enemy.h"
-#include "Map.h"
 #include "HealthBar.h"
+#include "Logger.h"
+#include "Map.h"
+#include "Player.h"
+#include "Menu.h"
+#include "GameOver.h"
 
 class Game {
   private:
@@ -23,13 +25,34 @@ class Game {
     Player player;
     Map map;
 
-    HealthBar healthBar; 
+    Menu menu;
+    GameOver goScreen;
 
-    bool keys[322] = { false };
+    std::vector<Ally> allies;
+    std::vector<Enemy> enemies;
+
+    HealthBar healthBar;
+
+    bool playing = false;
+    bool justDied = false;
+    int level = 0;
+
+    bool keys[322] = {false};
 
     void handleKeyboard();
+    void gameOverScreen();
+    void gameScreen();
+
+    void setScreen(int);
+
+    void select();
+
+    void clean();
+
+    void gameOver();
 
   public:
     Game();
     void run();
+    
 };
