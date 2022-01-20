@@ -40,7 +40,7 @@ class Player {
 
 		int speed = WALK_SPEED;
 
-		int lives = 3;
+		unsigned int lives = 3;
 
 		std::chrono::system_clock::time_point lastFrame = std::chrono::system_clock::now();
 		std::chrono::system_clock::time_point timeNow;
