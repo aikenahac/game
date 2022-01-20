@@ -150,15 +150,19 @@ void Player::removeLife() {
   }
 }
 
-void Player::detectCollision(SDL_Rect enemy) {
-
-  SDL_bool collision = SDL_HasIntersection(&render, &enemy);
+void Player::detectCollision(SDL_Rect npc, std::string type) {
+  SDL_bool collision = SDL_HasIntersection(&render, &npc);
 
   if (collision) {
-    Logger::warning("Colliding with the enemy!");
-    removeLife();
-    resetPosition();
-    Logger::info("Lives: " + std::to_string(lives));
+    if (type == "enemy") {
+      Logger::warning("Colliding with the enemy!");
+      removeLife();
+      resetPosition();
+      Logger::info("Lives: " + std::to_string(lives));
+    } else if (type == "ally") {
+      Logger::warning("Colliding with an ally!");
+      moveOnAllyCollide(npc);
+    }
   }
 }
 
@@ -182,4 +186,14 @@ void Player::resetPosition() {
 
 void Player::resetLives() {
   lives = 3;
+}
+
+void Player::moveOnAllyCollide(SDL_Rect npc) {
+  if (render.x < npc.x || render.y < npc.y) {
+    render.x -= speed; 
+    render.y -= speed; 
+  } else if (render.x > npc.x || render.y > npc.y) {
+    render.x += speed; 
+    render.y += speed; 
+  }
 }

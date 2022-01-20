@@ -35,6 +35,7 @@ void Game::run() {
 
   allies.clear();
   enemies.clear();
+  animals.clear();
 
 	menu.initialize(renderer);
 	goScreen.initialize(renderer);
@@ -56,6 +57,14 @@ void Game::run() {
     enemy.initialize(renderer);
 
     enemies.push_back(enemy);
+  }
+
+  for (int i = 0; i < 3; i++) {
+    Animal animal = Animal();
+
+    animal.initialize(renderer);
+
+    animals.push_back(animal);
   }
 
   while (isRunning) {
@@ -114,6 +123,8 @@ void Game::gameScreen() {
 
   for (auto ally = allies.begin(); ally != allies.end(); ally++) {
     ally->draw();
+    std::string type = "ally";
+    player.detectCollision(ally->getRect(), type);
   }
 
   for (auto ally = allies.begin(); ally != allies.end(); ally++) {
@@ -128,9 +139,15 @@ void Game::gameScreen() {
     enemy->draw();
   }
 
+  for (auto animal = animals.begin(); animal != animals.end(); animal++) {
+    animal->draw();
+  }
+
   for (auto enemy = enemies.begin(); enemy != enemies.end(); enemy++) {
     enemy->movement();
-    player.detectCollision(enemy->getRect());
+
+    std::string type = "enemy";
+    player.detectCollision(enemy->getRect(), type);
 
 		healthBar.setLives(player.getLives());
 

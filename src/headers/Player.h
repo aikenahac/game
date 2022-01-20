@@ -6,6 +6,7 @@
 #include <cstring>
 #include "Logger.h"
 #include "Config.h"
+#include "NPC.h"
 
 class Player {
   private:
@@ -66,7 +67,8 @@ class Player {
 		int getLives();
 
 		void resetPosition();
-		void detectCollision(SDL_Rect);
+		void moveOnAllyCollide(SDL_Rect);
+		void detectCollision(SDL_Rect, std::string);
 
 		void resetLives();
 };

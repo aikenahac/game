@@ -13,6 +13,7 @@
 #include "Player.h"
 #include "Menu.h"
 #include "GameOver.h"
+#include "Animal.h"
 
 class Game {
   private:
@@ -30,6 +31,7 @@ class Game {
 
     std::vector<Ally> allies;
     std::vector<Enemy> enemies;
+    std::vector<Animal> animals;
 
     HealthBar healthBar;
 

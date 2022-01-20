@@ -5,7 +5,7 @@
 # Compiler settings - Can be customized.
 CC = g++
 CXXFLAGS = -std=c++11 -Wall -g
-LDFLAGS = -lSDL2 
+LDFLAGS = -lSDL2 -lSDL2_ttf
 
 # Makefile settings - Can be customized.
 APPNAME = game
