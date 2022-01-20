@@ -189,6 +189,7 @@ void Game::select() {
 }
 
 void Game::gameOver() {
+  SDL_RenderClear(renderer);
 	playing = false;
 	justDied = true;
 }
