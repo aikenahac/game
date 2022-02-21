@@ -4,9 +4,13 @@
 #include <iostream>
 #include <chrono>
 #include <cstring>
+#include <vector>
+#include <algorithm>
+
 #include "Logger.h"
 #include "Config.h"
 #include "NPC.h"
+#include "Animal.h"
 
 class Player {
   private:
@@ -69,6 +73,8 @@ class Player {
 		void resetPosition();
 		void moveOnAllyCollide(SDL_Rect);
 		void detectCollision(SDL_Rect, std::string);
+
+		void detectCollection(SDL_Rect, Animal, std::vector<Animal>);
 
 		void resetLives();
 };

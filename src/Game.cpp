@@ -141,6 +141,8 @@ void Game::gameScreen() {
 
   for (auto animal = animals.begin(); animal != animals.end(); animal++) {
     animal->draw();
+
+    player.detectCollection(animal->getRect(), animal->getSelf(), animals);
   }
 
   for (auto enemy = enemies.begin(); enemy != enemies.end(); enemy++) {

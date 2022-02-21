@@ -160,9 +160,17 @@ void Player::detectCollision(SDL_Rect npc, std::string type) {
       resetPosition();
       Logger::info("Lives: " + std::to_string(lives));
     } else if (type == "ally") {
-      Logger::warning("Colliding with an ally!");
       moveOnAllyCollide(npc);
     }
+  }
+}
+
+void Player::detectCollection(SDL_Rect animalRect, Animal animal, std::vector<Animal> animals) {
+  SDL_bool collection = SDL_HasIntersection(&animalRect, &render);
+
+  if (collection) {
+    Logger::warning("Collecting animal");
+    // animals.erase(std::remove(animals.begin(), animals.end(), animal), animals.end());
   }
 }
 

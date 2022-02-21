@@ -45,8 +45,11 @@ class NPC {
 	  std::chrono::system_clock::time_point timeNow;
 
     void detectBorderCollision();
+    virtual void loadSprite() = 0;
 
   public:
+    virtual void initialize(SDL_Renderer*) = 0;
+
     void setDirection(uint8_t);
     void walking(bool);
     void draw();

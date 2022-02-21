@@ -2,6 +2,7 @@
 
 #include <SDL2/SDL.h>
 #include <iostream>
+#include <vector>
 
 #include "Logger.h"
 #include "Config.h"
@@ -35,4 +36,6 @@ class Animal {
     void draw();
 
     SDL_Rect getRect();
+
+    Animal getSelf();
 };  

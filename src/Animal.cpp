@@ -47,3 +47,12 @@ void Animal::draw() {
     &render
   );
 }
+
+SDL_Rect Animal::getRect() {
+  return render;
+}
+
+Animal Animal::getSelf() {
+  return *this;
+}
+
