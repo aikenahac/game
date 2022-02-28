@@ -2,6 +2,16 @@
 
 C++ game made as a school project.
 
+## Running
+
+### Linux
+
+CMake:
+
+```bash
+./build.sh
+```
+
 ## Instructions
 
 Vsaka igra vsebuje 2 ali več stopenj. Cilj posamezne stopnje je – rešiti čimveč živali in uničiti barabe oz. poiskati vse skrite sledi na posamezni stopnji in rešiti živali.

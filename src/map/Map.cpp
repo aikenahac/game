@@ -1,4 +1,4 @@
-#include "headers/Map.h"
+#include "Map.hpp"
 
 void Map::initialize(SDL_Renderer* renderer) {
   Logger::okay("Initializing map!");
@@ -11,7 +11,7 @@ void Map::initialize(SDL_Renderer* renderer) {
 void Map::loadMap() {
 	Logger::okay("Loading the map!");
 
-	SDL_Surface* assetMap = SDL_LoadBMP("src/assets/map.bmp");
+	SDL_Surface* assetMap = SDL_LoadBMP("../assets/map.bmp");
 	map = SDL_CreateTextureFromSurface(this->renderer, assetMap);
 }
 

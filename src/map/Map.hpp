@@ -2,13 +2,13 @@
 
 #include <SDL2/SDL.h>
 
-#include "Player.h"
-#include "Config.h"
-#include "Logger.h"
+#include "../player/Player.hpp"
+#include "../Config.hpp"
+#include "../logger/Logger.hpp"
 
-class GameOver {
+class Map {
   private:
-    SDL_Texture* texture;
+    SDL_Texture* map;
     
     SDL_Rect render = {
       0,
@@ -19,7 +19,7 @@ class GameOver {
 
     SDL_Renderer* renderer;
     
-    void loadAssets();
+    void loadMap();
 
   public:
     void initialize(SDL_Renderer*);

@@ -1,4 +1,4 @@
-#include "headers/Ally.h"
+#include "Ally.hpp"
 
 Ally::Ally() {
   int minX = 100;
@@ -32,7 +32,7 @@ void Ally::loadSprite() {
   char temp[40];
 
   for (int i = 0; i < 10; i++) {
-    strcpy(temp, "src/assets/allies/");
+    strcpy(temp, "../assets/allies/");
     strcat(temp, paths[i]);
     
     ally = SDL_LoadBMP(temp);

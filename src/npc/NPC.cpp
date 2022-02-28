@@ -1,4 +1,4 @@
-#include "headers/NPC.h"
+#include "NPC.hpp"
 
 void NPC::draw() {
   if (isWalking) {

@@ -1,4 +1,4 @@
-#include "headers/Animal.h"
+#include "Animal.hpp"
 
 Animal::Animal() {
   int minX = 100;
@@ -31,7 +31,7 @@ void Animal::loadAsset() {
 
   char temp[40];
 
-  strcpy(temp, "src/assets/animals/");
+  strcpy(temp, "../assets/animals/");
   strcat(temp, paths[rand()%3]);
 
   animal = SDL_LoadBMP(temp);

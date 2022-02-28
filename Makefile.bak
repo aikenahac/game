@@ -39,10 +39,10 @@ $(APPNAME): $(OBJ)
 %.d: $(SRCDIR)/%$(EXT)
 	@$(CPP) $(CFLAGS) $< -MM -MT $(@:%.d=$(OBJDIR)/%.o) >$@
 
-# Includes all .h files
+# Includes all .hpp files
 -include $(DEP)
 
-# Building rule for .o files and its .c/.cpp in combination with all .h
+# Building rule for .o files and its .c/.cpp in combination with all .hpp
 $(OBJDIR)/%.o: $(SRCDIR)/%$(EXT)
 	$(CC) $(CXXFLAGS) -o $@ -c $<
 

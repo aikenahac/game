@@ -4,16 +4,16 @@
 #include <iostream>
 #include <vector>
 
-#include "Ally.h"
-#include "Config.h"
-#include "Enemy.h"
-#include "HealthBar.h"
-#include "Logger.h"
-#include "Map.h"
-#include "Player.h"
-#include "Menu.h"
-#include "GameOver.h"
-#include "Animal.h"
+#include "../ally/Ally.hpp"
+#include "../Config.hpp"
+#include "../enemy/Enemy.hpp"
+#include "../health_bar/HealthBar.hpp"
+#include "../logger/Logger.hpp"
+#include "../map/Map.hpp"
+#include "../player/Player.hpp"
+#include "../menu/Menu.hpp"
+#include "../game/GameOver.hpp"
+#include "../animal/Animal.hpp"
 
 class Game {
   private:

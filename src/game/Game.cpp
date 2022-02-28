@@ -1,4 +1,4 @@
-#include "headers/Game.h"
+#include "Game.hpp"
 #include <SDL2/SDL.h>
 
 Game::Game() {

@@ -1,4 +1,4 @@
-#include "headers/Enemy.h"
+#include "Enemy.hpp"
 
 Enemy::Enemy() {
   int minX = 100;
@@ -33,7 +33,7 @@ void Enemy::loadSprite() {
   char temp[40];
 
   for (int i = 0; i < 10; i++) {
-    strcpy(temp, "src/assets/enemies/");
+    strcpy(temp, "../assets/enemies/");
     strcat(temp, paths[i]);
     
     ally = SDL_LoadBMP(temp);

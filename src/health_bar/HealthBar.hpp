@@ -4,9 +4,9 @@
 #include <iostream>
 #include <vector>
 
-#include "Config.h"
-#include "Logger.h"
-#include "Player.h"
+#include "../Config.hpp"
+#include "../logger/Logger.hpp"
+#include "../player/Player.hpp"
 
 class Heart {
   private:

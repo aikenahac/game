@@ -7,10 +7,10 @@
 #include <vector>
 #include <algorithm>
 
-#include "Logger.h"
-#include "Config.h"
-#include "NPC.h"
-#include "Animal.h"
+#include "../logger/Logger.hpp"
+#include "../Config.hpp"
+#include "../npc/NPC.hpp"
+#include "../animal/Animal.hpp"
 
 class Player {
   private:

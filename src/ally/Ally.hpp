@@ -1,6 +1,6 @@
 #pragma once
 
-#include "NPC.h"
+#include "../npc/NPC.hpp"
 
 class Ally : public NPC {
   private:

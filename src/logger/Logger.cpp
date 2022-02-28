@@ -1,4 +1,4 @@
-#include "headers/Logger.h"
+#include "Logger.hpp"
 
 void Logger::info(std::string message) {
   std::cout << "\033[34m [ INFO ]\033[0m " << message << '\n';

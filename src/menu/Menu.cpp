@@ -1,4 +1,4 @@
-#include "headers/Menu.h"
+#include "Menu.hpp"
 
 void Menu::initialize(SDL_Renderer* renderer) {
   Logger::okay("Initializing menu!");
@@ -11,10 +11,10 @@ void Menu::initialize(SDL_Renderer* renderer) {
 void Menu::loadAssets() {
 	Logger::okay("Loading the menu & selector!");
 
-	SDL_Surface* assetBg = SDL_LoadBMP("src/assets/home.bmp");
+	SDL_Surface* assetBg = SDL_LoadBMP("../assets/home.bmp");
 	texture = SDL_CreateTextureFromSurface(this->renderer, assetBg);
 	
-	SDL_Surface* assetSelector = SDL_LoadBMP("src/assets/selector.bmp");
+	SDL_Surface* assetSelector = SDL_LoadBMP("../assets/selector.bmp");
 	selectorTexture = SDL_CreateTextureFromSurface(this->renderer, assetSelector);
 }
 

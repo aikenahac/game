@@ -4,8 +4,8 @@
 #include <iostream>
 #include <vector>
 
-#include "Logger.h"
-#include "Config.h"
+#include "../logger/Logger.hpp"
+#include "../Config.hpp"
 
 class Animal {
   private:

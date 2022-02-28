@@ -2,9 +2,9 @@
 
 #include <SDL2/SDL.h>
 
-#include "Player.h"
-#include "Config.h"
-#include "Logger.h"
+#include "../player/Player.hpp"
+#include "../Config.hpp"
+#include "../logger/Logger.hpp"
 
 class Menu {
   private:

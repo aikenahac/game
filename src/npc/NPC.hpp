@@ -5,8 +5,8 @@
 #include <chrono>
 #include <cstring>
 
-#include "Logger.h"
-#include "Config.h"
+#include "../logger/Logger.hpp"
+#include "../Config.hpp"
 
 class NPC {
   protected:

@@ -1,4 +1,4 @@
-#include "headers/HealthBar.h"
+#include "HealthBar.hpp"
 
 void Heart::initialize(SDL_Renderer* renderer, int x, int y) {
   this->render = {
@@ -17,7 +17,7 @@ void Heart::loadAsset() {
 
   SDL_Surface* heart;
 
-  heart = SDL_LoadBMP("src/assets/gui/heart.bmp");
+  heart = SDL_LoadBMP("../assets/gui/heart.bmp");
 
   texture = SDL_CreateTextureFromSurface(this->renderer, heart);
 }

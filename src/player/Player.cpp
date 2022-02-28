@@ -1,4 +1,4 @@
-#include "headers/Player.h"
+#include "Player.hpp"
 
 Player::Player() {
   int minX = 100;
@@ -34,7 +34,7 @@ void Player::loadPlayerSprite() {
   char temp[40];
 
   for (int i = 0; i < 10; i++) {
-    strcpy(temp, "src/assets/character/");
+    strcpy(temp, "../assets/character/");
     strcat(temp, paths[i]);
 
     player = SDL_LoadBMP(temp);
