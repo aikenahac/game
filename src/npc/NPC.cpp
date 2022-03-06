@@ -57,23 +57,37 @@ void NPC::detectCollision(SDL_Rect enemy) {
   }
 }
 
-void NPC::movement() {
+void NPC::movement(SDL_Rect player) {
   if (dead) return;
 
+
   int direction = rand()%4;
+  int movements = rand()%10;
 
   switch (direction) {
     case 0:
-      moveUp();
+      for (int i = 0; i < movements; i++) {
+        moveUp();
+      }
+      previousDirection = 0;
       break;
     case 1:
-      moveDown();
+      for (int i = 0; i < movements; i++) {
+        moveDown();
+      }
+      previousDirection = 1;
       break;
     case 2:
-      moveLeft();
+      for (int i = 0; i < movements; i++) {
+        moveLeft();
+      }
+      previousDirection = 2;
       break;
     case 3:
-      moveRight();
+      for (int i = 0; i < movements; i++) {
+        moveRight();
+      }
+      previousDirection = 3;
       break;
   }
 }

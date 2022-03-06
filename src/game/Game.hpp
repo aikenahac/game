@@ -29,9 +29,9 @@ class Game {
     Menu menu;
     GameOver goScreen;
 
-    std::vector<Ally> allies;
-    std::vector<Enemy> enemies;
-    std::vector<Animal> animals;
+    std::vector<Ally*> allies;
+    std::vector<Enemy*> enemies;
+    std::vector<Animal*> animals;
 
     HealthBar healthBar;
 

@@ -44,25 +44,25 @@ void Game::run() {
   map.initialize(renderer);
 
   for (int i = 0; i < 3; i++) {
-    Ally ally = Ally();
+    Ally *ally = new Ally();
 
-    ally.initialize(renderer);
+    ally->initialize(renderer);
 
     allies.push_back(ally);
   }
 
   for (int i = 0; i < 4; i++) {
-    Enemy enemy = Enemy();
+    Enemy *enemy = new Enemy();
 
-    enemy.initialize(renderer);
+    enemy->initialize(renderer);
 
     enemies.push_back(enemy);
   }
 
   for (int i = 0; i < 3; i++) {
-    Animal animal = Animal();
+    Animal *animal = new Animal();
 
-    animal.initialize(renderer);
+    animal->initialize(renderer);
 
     animals.push_back(animal);
   }
@@ -121,35 +121,35 @@ void Game::gameScreen() {
 
   healthBar.draw();
 
-  for (auto ally = allies.begin(); ally != allies.end(); ally++) {
-    ally->draw();
+  for (std::vector<Ally*>::iterator ally = allies.begin(); ally != allies.end(); ally++) {
+    (*ally)->draw();
     std::string type = "ally";
-    player.detectCollision(ally->getRect(), type);
+    player.detectCollision((*ally)->getRect(), type);
   }
 
-  for (auto ally = allies.begin(); ally != allies.end(); ally++) {
-    ally->movement();
-    for (auto enemy = enemies.begin(); enemy != enemies.end(); enemy++) {
-      SDL_Rect enemyRect = enemy->getRect();
-      ally->detectCollision(enemyRect);
+  for (std::vector<Ally*>::iterator ally = allies.begin(); ally != allies.end(); ally++) {
+    for (std::vector<Enemy*>::iterator enemy = enemies.begin(); enemy != enemies.end(); enemy++) {
+      SDL_Rect enemyRect = (*enemy)->getRect();
+      (*ally)->movement(enemyRect);
+      (*ally)->detectCollision(enemyRect);
     }
   }
 
-  for (auto enemy = enemies.begin(); enemy != enemies.end(); enemy++) {
-    enemy->draw();
+  for (std::vector<Enemy*>::iterator enemy = enemies.begin(); enemy != enemies.end(); enemy++) {
+    (*enemy)->draw();
   }
 
-  for (auto animal = animals.begin(); animal != animals.end(); animal++) {
-    animal->draw();
+  for (std::vector<Animal*>::iterator animal = animals.begin(); animal != animals.end(); animal++) {
+    (*animal)->draw();
 
-    player.detectCollection(animal->getRect(), animal->getSelf(), animals);
+    player.detectCollection((*animal)->getRect(), *animal, animals);
   }
 
-  for (auto enemy = enemies.begin(); enemy != enemies.end(); enemy++) {
-    enemy->movement();
+  for (std::vector<Enemy*>::iterator enemy = enemies.begin(); enemy != enemies.end(); enemy++) {
+    (*enemy)->movement(player.getRect());
 
     std::string type = "enemy";
-    player.detectCollision(enemy->getRect(), type);
+    player.detectCollision((*enemy)->getRect(), type);
 
 		healthBar.setLives(player.getLives());
 
