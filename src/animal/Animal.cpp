@@ -19,7 +19,7 @@ Animal::Animal() {
 }
 
 void Animal::initialize(SDL_Renderer* renderer) {
-  Logger::okay("Initializing an ally!");
+  Logger::okay("Initializing an animal!");
 
 	this->renderer = renderer;
 	

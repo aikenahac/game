@@ -43,17 +43,17 @@ class Game {
     
     int level = 0;
 
-    int level1Animals = 3;
-    int level1Enemies = 2;
     int level1Allies = 1;
+    int level1Enemies = 2;
+    int level1Animals = 3;
 
-    int level2Animals = 6;
-    int level2Enemies = 3;
     int level2Allies = 2;
+    int level2Enemies = 3;
+    int level2Animals = 4;
 
-    int level3Animals = 8;
+    int level3Allies = 1;
     int level3Enemies = 4;
-    int level3Allies = 0;
+    int level3Animals = 8;
 
     bool keys[322] = {false};
 
@@ -70,6 +70,9 @@ class Game {
     void gameOver();
 
     void victory();
+
+    void addEntities(int alliesCount, int enemiesCount, int animalsCount);
+    void cleanEntities();
 
   public:
     Game();

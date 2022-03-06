@@ -33,10 +33,6 @@ void Game::run() {
 
 	healthBar.initialize(renderer, player);
 
-  allies.clear();
-  enemies.clear();
-  animals.clear();
-
 	menu.initialize(renderer);
 	goScreen.initialize(renderer);
 	victoryScreen.initialize(renderer);
@@ -60,7 +56,7 @@ void Game::run() {
     enemies.push_back(enemy);
   }
 
-  for (int i = 0; i < 3; i++) {
+  for (int i = 0; i < level1Animals; i++) {
     Animal *animal = new Animal();
 
     animal->initialize(renderer);
@@ -146,12 +142,6 @@ void Game::gameScreen() {
       if (level == 0) {
         level1Animals--;
         if (level1Animals == 0) victory();
-      } else if (level == 1) {
-        level2Animals--;
-        if (level2Animals == 0) victory();
-      } else if (level == 2) {
-        level3Animals--;
-        if (level3Animals == 0) victory();
       }
     }
   }
@@ -205,7 +195,6 @@ void Game::select() {
 	}
 }
 
-
 void Game::victory() {
   SDL_RenderClear(renderer);
 	playing = false;
@@ -222,4 +211,47 @@ void Game::clean() {
 	SDL_DestroyRenderer(renderer);
 	SDL_DestroyWindow(window);
 	SDL_Quit();
+}
+
+void Game::cleanEntities() {
+  for (std::vector<Enemy*>::iterator enemy = enemies.begin(); enemy != enemies.end(); enemy++) {
+    enemies.erase(std::remove(enemies.begin(), enemies.end(), *enemy), enemies.end());
+    delete (*enemy);
+  }
+
+  for (std::vector<Ally*>::iterator ally = allies.begin(); ally != allies.end(); ally++) {
+    allies.erase(std::remove(allies.begin(), allies.end(), *ally), allies.end());
+    delete (*ally);
+  }
+
+  for (std::vector<Animal*>::iterator animal = animals.begin(); animal != animals.end(); animal++) {
+    animals.erase(std::remove(animals.begin(), animals.end(), *animal), animals.end());
+    delete (*animal);
+  }
+}
+
+void Game::addEntities(int alliesCount, int enemiesCount, int animalsCount) {
+  for (int i = 0; i < alliesCount; i++) {
+    Ally *ally = new Ally();
+
+    ally->initialize(renderer);
+
+    allies.push_back(ally);
+  }
+
+  for (int i = 0; i < enemiesCount; i++) {
+    Enemy *enemy = new Enemy();
+
+    enemy->initialize(renderer);
+
+    enemies.push_back(enemy);
+  }
+
+  for (int i = 0; i < animalsCount; i++) {
+    Animal *animal = new Animal();
+
+    animal->initialize(renderer);
+
+    animals.push_back(animal);
+  }
 }
