@@ -13,6 +13,7 @@
 #define HOME_SCREEN 0
 #define GAME_OVER_SCREEN 1
 #define GAME_SCREEN 2
+#define VICTORY_SCREEN 3
 
 #define START 0
 #define LOAD_REPLAY 1

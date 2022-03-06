@@ -1,7 +1,7 @@
 #include "GameOver.hpp"
 
 void GameOver::initialize(SDL_Renderer* renderer) {
-  Logger::okay("Initializing menu!");
+  Logger::okay("Initializing game over screen!");
 
   this->renderer = renderer;
 
@@ -9,7 +9,7 @@ void GameOver::initialize(SDL_Renderer* renderer) {
 }
 
 void GameOver::loadAssets() {
-	Logger::okay("Loading the menu & selector!");
+	Logger::okay("Loading the game over screen!");
 
 	SDL_Surface* assetBg = SDL_LoadBMP("../assets/game_over.bmp");
 	texture = SDL_CreateTextureFromSurface(this->renderer, assetBg);

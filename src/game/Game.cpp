@@ -39,11 +39,12 @@ void Game::run() {
 
 	menu.initialize(renderer);
 	goScreen.initialize(renderer);
+	victoryScreen.initialize(renderer);
 
   player.initialize(renderer);
   map.initialize(renderer);
 
-  for (int i = 0; i < 3; i++) {
+  for (int i = 0; i < 1; i++) {
     Ally *ally = new Ally();
 
     ally->initialize(renderer);
@@ -51,7 +52,7 @@ void Game::run() {
     allies.push_back(ally);
   }
 
-  for (int i = 0; i < 4; i++) {
+  for (int i = 0; i < 2; i++) {
     Enemy *enemy = new Enemy();
 
     enemy->initialize(renderer);
@@ -89,6 +90,7 @@ void Game::run() {
 
     if (playing) setScreen(GAME_SCREEN);
 		else if (justDied) setScreen(GAME_OVER_SCREEN);
+    else if (justWon) setScreen(VICTORY_SCREEN);
 		else setScreen(HOME_SCREEN);
 
     SDL_RenderPresent(renderer);
@@ -106,9 +108,10 @@ void Game::handleKeyboard() {
   if (keys[SDLK_LESS]) player.setSpeed(SPRINT_SPEED);
   if (!keys[SDLK_LESS]) player.setSpeed(WALK_SPEED);
 
-	if (keys[SDLK_c]) {
+	if (keys[SDLK_c] && (justWon == true || justDied == true)) {
 		player.resetLives();
 		justDied = false;
+    justWon = false;
 	}
 
   if (!keys[SDLK_w] && !keys[SDLK_s] && !keys[SDLK_a] && !keys[SDLK_d]) {
@@ -129,20 +132,28 @@ void Game::gameScreen() {
 
   for (std::vector<Ally*>::iterator ally = allies.begin(); ally != allies.end(); ally++) {
     for (std::vector<Enemy*>::iterator enemy = enemies.begin(); enemy != enemies.end(); enemy++) {
-      SDL_Rect enemyRect = (*enemy)->getRect();
-      // (*ally)->movement(enemyRect);
-      (*ally)->detectCollision(enemyRect);
+      (*enemy)->draw();
+      (*ally)->movement((*enemy)->getRect());
     }
-  }
-
-  for (std::vector<Enemy*>::iterator enemy = enemies.begin(); enemy != enemies.end(); enemy++) {
-    (*enemy)->draw();
   }
 
   for (std::vector<Animal*>::iterator animal = animals.begin(); animal != animals.end(); animal++) {
     (*animal)->draw();
 
-    player.detectCollection((*animal)->getRect(), *animal, animals);
+    bool collection = player.detectCollection((*animal)->getRect(), *animal, animals);
+
+    if (collection) {
+      if (level == 0) {
+        level1Animals--;
+        if (level1Animals == 0) victory();
+      } else if (level == 1) {
+        level2Animals--;
+        if (level2Animals == 0) victory();
+      } else if (level == 2) {
+        level3Animals--;
+        if (level3Animals == 0) victory();
+      }
+    }
   }
 
   for (std::vector<Enemy*>::iterator enemy = enemies.begin(); enemy != enemies.end(); enemy++) {
@@ -169,6 +180,10 @@ void Game::setScreen(int screen) {
 			SDL_RenderClear(renderer);
       goScreen.draw();
       break;
+    case VICTORY_SCREEN:
+      SDL_RenderClear(renderer);
+      victoryScreen.draw();
+      break;
     case GAME_SCREEN:
 			SDL_RenderClear(renderer);
       gameScreen();
@@ -188,6 +203,13 @@ void Game::select() {
 			isRunning = false;
 			break;
 	}
+}
+
+
+void Game::victory() {
+  SDL_RenderClear(renderer);
+	playing = false;
+  justWon = true;
 }
 
 void Game::gameOver() {

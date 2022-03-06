@@ -165,7 +165,7 @@ void Player::detectCollision(SDL_Rect npc, std::string type) {
   }
 }
 
-void Player::detectCollection(SDL_Rect animalRect, Animal *animal, std::vector<Animal*> animals) {
+bool Player::detectCollection(SDL_Rect animalRect, Animal *animal, std::vector<Animal*> animals) {
   SDL_bool collection = SDL_HasIntersection(&animalRect, &render);
 
   if (collection) {
@@ -173,6 +173,8 @@ void Player::detectCollection(SDL_Rect animalRect, Animal *animal, std::vector<A
     animals.erase(std::remove(animals.begin(), animals.end(), animal), animals.end());
     delete animal;
   }
+
+  return collection;
 }
 
 SDL_Rect Player::getRect() {

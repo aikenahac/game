@@ -34,14 +34,11 @@ class NPC {
     SDL_Texture* assets[10];
 
     bool isWalking = false;
-    bool dead = false;
 
     uint8_t direction = 0;
     uint8_t frame = 0;
 
     int speed = WALK_SPEED / 2;
-
-    int previousDirection = 0; // 0 - up, 1 - down, 2 - left, 3 - right
 
     std::chrono::system_clock::time_point lastFrame = std::chrono::system_clock::now();
 	  std::chrono::system_clock::time_point timeNow;

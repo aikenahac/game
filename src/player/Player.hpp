@@ -76,7 +76,7 @@ class Player {
 		void moveOnAllyCollide(SDL_Rect);
 		void detectCollision(SDL_Rect, std::string);
 
-		void detectCollection(SDL_Rect, Animal*, std::vector<Animal*>);
+		bool detectCollection(SDL_Rect, Animal*, std::vector<Animal*>);
 
 		void resetLives();
 };

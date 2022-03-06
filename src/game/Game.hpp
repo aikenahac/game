@@ -13,6 +13,7 @@
 #include "../player/Player.hpp"
 #include "../menu/Menu.hpp"
 #include "../game/GameOver.hpp"
+#include "../game/Victory.hpp"
 #include "../animal/Animal.hpp"
 
 class Game {
@@ -28,6 +29,7 @@ class Game {
 
     Menu menu;
     GameOver goScreen;
+    Victory victoryScreen;
 
     std::vector<Ally*> allies;
     std::vector<Enemy*> enemies;
@@ -37,7 +39,21 @@ class Game {
 
     bool playing = false;
     bool justDied = false;
+    bool justWon = false;
+    
     int level = 0;
+
+    int level1Animals = 3;
+    int level1Enemies = 2;
+    int level1Allies = 1;
+
+    int level2Animals = 6;
+    int level2Enemies = 3;
+    int level2Allies = 2;
+
+    int level3Animals = 8;
+    int level3Enemies = 4;
+    int level3Allies = 0;
 
     bool keys[322] = {false};
 
@@ -52,6 +68,8 @@ class Game {
     void clean();
 
     void gameOver();
+
+    void victory();
 
   public:
     Game();

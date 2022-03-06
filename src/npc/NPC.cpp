@@ -49,24 +49,14 @@ SDL_Rect NPC::getRect() {
 }
 
 void NPC::detectCollision(SDL_Rect enemy) {
-
   SDL_bool collision = SDL_HasIntersection(&render, &enemy);
-
-  if (collision) {
-    dead = true;
-  }
 }
 
 void NPC::movement(SDL_Rect target) {
-  if (dead) return;
-
-
   SDL_Rect temp = {
     target.x,
     target.y
   };
-
-  std::cout << "x: " << temp.x << ", y: " << temp.y << "\n";
   
   if (!this->compareRect(temp)) {
     if (render.x > temp.x && render.y > temp.y) {
