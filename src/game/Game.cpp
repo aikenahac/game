@@ -68,12 +68,12 @@ void Game::run() {
   }
 
   while (isRunning) {
-
     while (SDL_PollEvent(&event)) {
       if (event.type == SDL_QUIT) {
         isRunning = false;
-      } else if (event.key.keysym.sym == SDLK_LSHIFT && event.key.keysym.sym == SDLK_RSHIFT)
+      } else if (event.key.keysym.sym == SDLK_LSHIFT && event.key.keysym.sym == SDLK_RSHIFT) {
         continue;
+      }
 
 			else if (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_e) menu.moveDown();
 			else if (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_q) menu.moveUp();
@@ -130,7 +130,7 @@ void Game::gameScreen() {
   for (std::vector<Ally*>::iterator ally = allies.begin(); ally != allies.end(); ally++) {
     for (std::vector<Enemy*>::iterator enemy = enemies.begin(); enemy != enemies.end(); enemy++) {
       SDL_Rect enemyRect = (*enemy)->getRect();
-      (*ally)->movement(enemyRect);
+      // (*ally)->movement(enemyRect);
       (*ally)->detectCollision(enemyRect);
     }
   }

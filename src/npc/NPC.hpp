@@ -61,9 +61,11 @@ class NPC {
     void moveLeft();
     void moveRight();
 
-    void movement(SDL_Rect player);
+    void movement(SDL_Rect target);
 
     SDL_Rect getRect();
 
     void detectCollision(SDL_Rect);
+
+    bool compareRect(SDL_Rect temp);
 };  

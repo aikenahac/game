@@ -57,38 +57,31 @@ void NPC::detectCollision(SDL_Rect enemy) {
   }
 }
 
-void NPC::movement(SDL_Rect player) {
+void NPC::movement(SDL_Rect target) {
   if (dead) return;
 
 
-  int direction = rand()%4;
-  int movements = rand()%10;
+  SDL_Rect temp = {
+    target.x,
+    target.y
+  };
 
-  switch (direction) {
-    case 0:
-      for (int i = 0; i < movements; i++) {
-        moveUp();
-      }
-      previousDirection = 0;
-      break;
-    case 1:
-      for (int i = 0; i < movements; i++) {
-        moveDown();
-      }
-      previousDirection = 1;
-      break;
-    case 2:
-      for (int i = 0; i < movements; i++) {
-        moveLeft();
-      }
-      previousDirection = 2;
-      break;
-    case 3:
-      for (int i = 0; i < movements; i++) {
-        moveRight();
-      }
-      previousDirection = 3;
-      break;
+  std::cout << "x: " << temp.x << ", y: " << temp.y << "\n";
+  
+  if (!this->compareRect(temp)) {
+    if (render.x > temp.x && render.y > temp.y) {
+      moveLeft();
+      moveUp();
+    } else if (render.x < temp.x && render.y > temp.y) {
+      moveUp();
+      moveRight();
+    } else if (render.x > temp.x && render.y < temp.y) {
+      moveDown();
+      moveLeft();
+    } else if (render.x < temp.x && render.y < temp.y) {
+      moveDown();
+      moveRight();
+    }
   }
 }
 
@@ -137,4 +130,9 @@ void NPC::moveRight() {
 
   this->render.x += speed;
   detectBorderCollision();
+}
+
+bool NPC::compareRect(SDL_Rect temp) {
+  if (render.x == temp.x && render.y == temp.y) return true;
+  return false;
 }
