@@ -29,13 +29,10 @@ void Ally::initialize(SDL_Renderer* renderer) {
 void Ally::loadSprite() {
   SDL_Surface* ally;
 
-  char temp[40];
-
   for (int i = 0; i < 10; i++) {
-    strcpy(temp, "../assets/allies/");
-    strcat(temp, paths[i]);
-    
-    ally = SDL_LoadBMP(temp);
+    std::string temp = "../assets/allies/" + paths[i];
+
+    ally = SDL_LoadBMP(temp.c_str());
   
     assets[i] = SDL_CreateTextureFromSurface(renderer, ally);
   }

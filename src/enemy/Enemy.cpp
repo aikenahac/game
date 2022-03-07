@@ -30,13 +30,10 @@ void Enemy::loadSprite() {
 
   SDL_Surface* ally;
 
-  char temp[40];
-
   for (int i = 0; i < 10; i++) {
-    strcpy(temp, "../assets/enemies/");
-    strcat(temp, paths[i]);
+    std::string temp = "../assets/enemies/" + paths[i];
     
-    ally = SDL_LoadBMP(temp);
+    ally = SDL_LoadBMP(temp.c_str());
   
     assets[i] = SDL_CreateTextureFromSurface(renderer, ally);
   }

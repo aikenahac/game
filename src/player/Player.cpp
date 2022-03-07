@@ -31,13 +31,10 @@ void Player::loadPlayerSprite() {
 
   SDL_Surface* player;
 
-  char temp[40];
-
   for (int i = 0; i < 10; i++) {
-    strcpy(temp, "../assets/character/");
-    strcat(temp, paths[i]);
+    std::string temp =  "../assets/character/" + paths[i];
 
-    player = SDL_LoadBMP(temp);
+    player = SDL_LoadBMP(temp.c_str());
   
     assets[i] = SDL_CreateTextureFromSurface(renderer, player);
   }

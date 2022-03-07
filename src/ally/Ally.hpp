@@ -1,5 +1,7 @@
 #pragma once
 
+#include <cstring>
+
 #include "../npc/NPC.hpp"
 
 class Ally : public NPC {

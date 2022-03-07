@@ -3,7 +3,7 @@
 #include <SDL2/SDL.h>
 #include <iostream>
 #include <chrono>
-#include <cstring>
+#include <string>
 #include <vector>
 #include <algorithm>
 
@@ -14,7 +14,7 @@
 
 class Player {
   private:
-    char paths[10][11] = {
+    std::string paths[10] = {
 			"down1.bmp",
 			"down2.bmp",
 			"down3.bmp",

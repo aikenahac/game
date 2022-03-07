@@ -1,3 +1,6 @@
 # Build files
 build/
 .vscode/
+.idea/
+build-mingw/
+cmake-build-debug/
