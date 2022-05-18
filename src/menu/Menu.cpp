@@ -47,13 +47,16 @@ void Menu::draw() {
 void Menu::setSelection() {
 	switch (selection) {
 		case START:
-			selector.y = 80;
+			selector.y = 72;
+			break;
+		case LEADERBOARD:
+			selector.y = 230;
 			break;
 		case LOAD_REPLAY:
-			selector.y = 311;
+			selector.y = 394;
 			break;
 		case QUIT:
-			selector.y = 540;
+			selector.y = 555;
 			break;
 	}
 }

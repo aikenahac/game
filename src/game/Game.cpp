@@ -1,5 +1,6 @@
 #include "Game.hpp"
 #include <SDL2/SDL.h>
+#include <SDL2/SDL_ttf.h>
 
 Game::Game() {
   if (SDL_Init(SDL_INIT_EVERYTHING) < 0) {
@@ -24,6 +25,8 @@ Game::Game() {
 
     renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
 
+    TTF_Init();
+
     isRunning = true;
   }
 }
@@ -36,6 +39,7 @@ void Game::run() {
 	menu.initialize(renderer);
 	goScreen.initialize(renderer);
 	victoryScreen.initialize(renderer);
+  leaderboard.initialize(renderer);
 
   player.initialize(renderer);
   map.initialize(renderer);
@@ -64,6 +68,9 @@ void Game::run() {
     animals.push_back(animal);
   }
 
+  std::cout << "What is your name? ";
+  std::cin >> this->playerName;
+
   while (isRunning) {
     while (SDL_PollEvent(&event)) {
       if (event.type == SDL_QUIT) {
@@ -84,10 +91,11 @@ void Game::run() {
 
     handleKeyboard();
 
-    if (playing) setScreen(GAME_SCREEN);
-		else if (justDied) setScreen(GAME_OVER_SCREEN);
-    else if (justWon) setScreen(VICTORY_SCREEN);
-		else setScreen(HOME_SCREEN);
+    if (playing) this->setScreen(GAME_SCREEN);
+		else if (justDied) this->setScreen(GAME_OVER_SCREEN);
+    else if (justWon) this->setScreen(VICTORY_SCREEN);
+    else if (showLeaderboard) this->setScreen(LEADERBOARD_SCREEN);
+		else this->setScreen(HOME_SCREEN);
 
     SDL_RenderPresent(renderer);
   }
@@ -104,10 +112,12 @@ void Game::handleKeyboard() {
   if (keys[SDLK_LESS]) player.setSpeed(SPRINT_SPEED);
   if (!keys[SDLK_LESS]) player.setSpeed(WALK_SPEED);
 
-	if (keys[SDLK_c] && (justWon == true || justDied == true)) {
+	if (keys[SDLK_c] && (justWon == true || justDied == true || showLeaderboard == true)) {
 		player.resetLives();
 		justDied = false;
     justWon = false;
+    showLeaderboard = false;
+    score = 0;
 	}
 
   if (!keys[SDLK_w] && !keys[SDLK_s] && !keys[SDLK_a] && !keys[SDLK_d]) {
@@ -139,6 +149,7 @@ void Game::gameScreen() {
     bool collection = player.detectCollection((*animal)->getRect(), *animal, animals);
 
     if (collection) {
+      this->updateScore(100);
       if (level == 0) {
         level1Animals--;
         if (level1Animals == 0) victory();
@@ -150,9 +161,13 @@ void Game::gameScreen() {
     (*enemy)->movement(player.getRect());
 
     std::string type = "enemy";
-    player.detectCollision((*enemy)->getRect(), type);
+    bool collision = player.detectCollision((*enemy)->getRect(), type);
 
-		healthBar.setLives(player.getLives());
+		if (collision) {
+      healthBar.setLives(player.getLives());
+
+      this->updateScore(-20);
+    }
 
 		if (player.getLives() == 0) gameOver();
   }
@@ -178,6 +193,11 @@ void Game::setScreen(int screen) {
 			SDL_RenderClear(renderer);
       gameScreen();
       break;
+    case LEADERBOARD_SCREEN:
+      // this->loadScores();
+      SDL_RenderClear(renderer);
+      leaderboard.draw();
+      break;
   }
 }
 
@@ -186,6 +206,10 @@ void Game::select() {
 		case START:
 			playing = true;
 			break;
+    case LEADERBOARD:
+      // loadScores();
+      showLeaderboard = true;
+      break;
 		case LOAD_REPLAY:
 			isRunning = false;
 			break;
@@ -197,12 +221,14 @@ void Game::select() {
 
 void Game::victory() {
   SDL_RenderClear(renderer);
+  saveScore();
 	playing = false;
   justWon = true;
 }
 
 void Game::gameOver() {
   SDL_RenderClear(renderer);
+  saveScore();
 	playing = false;
 	justDied = true;
 }
@@ -211,6 +237,7 @@ void Game::clean() {
 	SDL_DestroyRenderer(renderer);
 	SDL_DestroyWindow(window);
 	SDL_Quit();
+  TTF_Quit();
 }
 
 void Game::cleanEntities() {
@@ -254,4 +281,72 @@ void Game::addEntities(int alliesCount, int enemiesCount, int animalsCount) {
 
     animals.push_back(animal);
   }
+}
+
+void Game::saveScore() {
+  std::string msg = "Saving " + this->playerName + "'s score of ";
+
+  msg += std::to_string(this->score);
+
+  std::ifstream dataRead("../Leaderboard.bin", std::ios::binary);
+  std::ofstream dataWrite("../tmp.bin", std::ios::binary);
+
+  Save temp;
+  Save newSave;
+  
+  std::cout << "OUTSIDE!\n";
+
+  if (dataWrite.is_open() && dataRead.is_open()) {
+    std::cout << "HERE!\n";
+    strcpy(newSave.player, playerName.c_str());
+    newSave.score = score;
+
+    bool written = false;
+
+    while(dataRead.read((char *) &temp, sizeof(Save))) {
+      if (!written) {
+        Logger::info(msg);
+        dataWrite.write((char*)&newSave, sizeof(Save));
+        written = true;
+      }
+      dataWrite.write((char*)&temp, sizeof(Save));
+    }
+
+    if (!written) {
+      dataWrite.write((char*)&newSave, sizeof(Save));
+      written = true;
+    }
+  }
+
+  dataWrite.close();
+  dataRead.close();
+
+  remove("../Leaderboard.bin");
+  rename("../tmp.bin", "../Leaderboard.bin");
+}
+
+void Game::updateScore(int score) {
+  this->score = this->score + score;
+
+  std::string msg = "Score is now: ";
+
+  msg += std::to_string(this->score);
+
+  Logger::info(msg);
+}
+
+void Game::loadScores() {
+  std::ifstream data("../Leaderboard.bin", std::ios::binary);
+
+  Logger::info("Loading scores");
+  
+  Save curr;
+
+  if (data.is_open()) {
+    while (data.read((char *) &curr, sizeof(Save))) {
+      std::cout << curr.player << " " << curr.score << "\n";
+    }
+  }
+
+  data.close();
 }

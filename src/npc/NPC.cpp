@@ -4,7 +4,7 @@ void NPC::draw() {
   if (isWalking) {
     timeNow = std::chrono::system_clock::now();
 		
-		if((timeNow - lastFrame).count() > 100000000){
+		if((timeNow - lastFrame).count() > 100000000) {
 			switch (direction) {
 			case 0:
 			case 3:

@@ -3,6 +3,10 @@
 #include <SDL2/SDL.h>
 #include <iostream>
 #include <vector>
+#include <fstream>
+#include <string>
+#include <cstring>
+#include <cstdio>
 
 #include "../ally/Ally.hpp"
 #include "../Config.hpp"
@@ -15,6 +19,8 @@
 #include "../game/GameOver.hpp"
 #include "../game/Victory.hpp"
 #include "../animal/Animal.hpp"
+#include "../leaderboard/Leaderboard.hpp"
+#include "../utils/Utils.hpp"
 
 class Game {
   private:
@@ -30,6 +36,7 @@ class Game {
     Menu menu;
     GameOver goScreen;
     Victory victoryScreen;
+    Leaderboard leaderboard;
 
     std::vector<Ally*> allies;
     std::vector<Enemy*> enemies;
@@ -40,8 +47,11 @@ class Game {
     bool playing = false;
     bool justDied = false;
     bool justWon = false;
-    
+    bool showLeaderboard = false;
+
     int level = 0;
+
+    int score = 0;
 
     int level1Allies = 1;
     int level1Enemies = 2;
@@ -56,6 +66,8 @@ class Game {
     int level3Animals = 8;
 
     bool keys[322] = {false};
+
+    std::string playerName;
 
     void handleKeyboard();
     void gameOverScreen();
@@ -74,8 +86,11 @@ class Game {
     void addEntities(int alliesCount, int enemiesCount, int animalsCount);
     void cleanEntities();
 
+    void updateScore(int score);
+    void saveScore();
+    void loadScores();
+
   public:
     Game();
     void run();
-    
 };

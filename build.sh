@@ -1,5 +1,5 @@
 #!/bin/bash
 mkdir build
-cmake -B ./build -S .
+cmake -S . -B build/
 cd build
 make

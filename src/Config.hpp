@@ -14,7 +14,9 @@
 #define GAME_OVER_SCREEN 1
 #define GAME_SCREEN 2
 #define VICTORY_SCREEN 3
+#define LEADERBOARD_SCREEN 4
 
 #define START 0
-#define LOAD_REPLAY 1
-#define QUIT 2
+#define LEADERBOARD 1
+#define LOAD_REPLAY 2
+#define QUIT 3

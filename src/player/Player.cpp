@@ -147,7 +147,7 @@ void Player::removeLife() {
   }
 }
 
-void Player::detectCollision(SDL_Rect npc, std::string type) {
+bool Player::detectCollision(SDL_Rect npc, std::string type) {
   SDL_bool collision = SDL_HasIntersection(&render, &npc);
 
   if (collision) {
@@ -160,6 +160,8 @@ void Player::detectCollision(SDL_Rect npc, std::string type) {
       moveOnAllyCollide(npc);
     }
   }
+
+  return collision;
 }
 
 bool Player::detectCollection(SDL_Rect animalRect, Animal *animal, std::vector<Animal*> animals) {

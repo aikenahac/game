@@ -19,10 +19,10 @@ class Menu {
     };
 
     SDL_Rect selector = {
-      800,
+      900,
       80,
-      271,
-      180
+      210,
+      140
     };
 
     SDL_Renderer* renderer;
