@@ -91,6 +91,6 @@ class Game {
     void loadScores();
 
   public:
-    Game();
+    Game(bool fullscreen);
     void run();
 };

@@ -2,7 +2,7 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_ttf.h>
 
-Game::Game() {
+Game::Game(bool fullscreen) {
   if (SDL_Init(SDL_INIT_EVERYTHING) < 0) {
     Logger::error("SDL crashed and burned!");
     Logger::error("SDL ERROR: ");
@@ -15,7 +15,8 @@ Game::Game() {
         SDL_WINDOWPOS_CENTERED,
         WIDTH,
         HEIGHT,
-        SDL_WINDOW_SHOWN);
+        fullscreen ? SDL_WINDOW_FULLSCREEN : SDL_WINDOW_SHOWN
+        );
 
     if (window == NULL) {
       Logger::error("SDL window error!");
