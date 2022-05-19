@@ -147,6 +147,10 @@ void Player::removeLife() {
   }
 }
 
+void Player::addLife() {
+  lives++;
+}
+
 bool Player::detectCollision(SDL_Rect npc, std::string type) {
   SDL_bool collision = SDL_HasIntersection(&render, &npc);
 

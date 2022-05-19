@@ -32,7 +32,7 @@ class HealthBar {
   private:
     int lives;
 
-    Heart hearts[3];
+    Heart hearts[10];
 
   public:
     void initialize(SDL_Renderer*, Player);

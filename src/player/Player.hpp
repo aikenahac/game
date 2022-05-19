@@ -68,6 +68,7 @@ class Player {
 
 		void setSpeed(int);
 		void removeLife();
+		void addLife();
 		int getLives();
 
 		SDL_Rect getRect();

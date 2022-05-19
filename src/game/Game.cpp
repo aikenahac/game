@@ -35,6 +35,11 @@ Game::Game(bool fullscreen) {
 void Game::run() {
   srand(time(NULL));
 
+  std::cout << "What is your name? ";
+  std::cin >> this->playerName;
+
+  Logger::info("Player: " + playerName);
+
 	healthBar.initialize(renderer, player);
 
 	menu.initialize(renderer);
@@ -68,9 +73,6 @@ void Game::run() {
 
     animals.push_back(animal);
   }
-
-  std::cout << "What is your name? ";
-  std::cin >> this->playerName;
 
   while (isRunning) {
     while (SDL_PollEvent(&event)) {
@@ -131,6 +133,52 @@ void Game::gameScreen() {
 
   healthBar.draw();
 
+  if (animals.empty() || enemies.empty() || allies.empty()) {
+    std::cout << "Vectors are empty.\n\n";
+    int animalCount, allyCount, enemyCount;
+
+    switch (level) {
+      case 1:
+        animalCount = level2Animals;
+        allyCount = level2Allies;
+        enemyCount = level2Enemies;
+        break;
+      case 2:
+        animalCount = level3Animals;
+        allyCount = level3Allies;
+        enemyCount = level3Enemies;
+        break;
+      default:
+        animalCount = level1Animals;
+        allyCount = level1Allies;
+        enemyCount = level1Enemies;
+    }
+    
+    for (int i = 0; i < allyCount; i++) {
+      Ally *ally = new Ally();
+
+      ally->initialize(renderer);
+
+      allies.push_back(ally);
+    }
+
+    for (int i = 0; i < enemyCount; i++) {
+      Enemy *enemy = new Enemy();
+
+      enemy->initialize(renderer);
+
+      enemies.push_back(enemy);
+    }
+
+    for (int i = 0; i < animalCount; i++) {
+      Animal *animal = new Animal();
+
+      animal->initialize(renderer);
+
+      animals.push_back(animal);
+    }
+  }
+
   for (std::vector<Ally*>::iterator ally = allies.begin(); ally != allies.end(); ally++) {
     (*ally)->draw();
     std::string type = "ally";
@@ -153,7 +201,27 @@ void Game::gameScreen() {
       this->updateScore(100);
       if (level == 0) {
         level1Animals--;
-        if (level1Animals == 0) victory();
+        if (level1Animals == 0) {
+          allies.clear();
+          enemies.clear();
+          level++;
+          Logger::info("Moving to level: " + std::to_string(level));
+        };
+      } else if (level == 1) {
+          level2Animals--;
+          if (level2Animals == 0) {
+            allies.clear();
+            enemies.clear();
+            level++;
+            Logger::info("Moving to level: " + std::to_string(level));
+          }
+      } else if (level == 2) {
+          level3Animals--;
+          if (level3Animals == 0) {
+            allies.clear();
+            enemies.clear();
+            victory();
+          }
       }
     }
   }
@@ -294,11 +362,8 @@ void Game::saveScore() {
 
   Save temp;
   Save newSave;
-  
-  std::cout << "OUTSIDE!\n";
 
   if (dataWrite.is_open() && dataRead.is_open()) {
-    std::cout << "HERE!\n";
     strcpy(newSave.player, playerName.c_str());
     newSave.score = score;
 
@@ -306,7 +371,6 @@ void Game::saveScore() {
 
     while(dataRead.read((char *) &temp, sizeof(Save))) {
       if (!written) {
-        Logger::info(msg);
         dataWrite.write((char*)&newSave, sizeof(Save));
         written = true;
       }

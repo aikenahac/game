@@ -4,6 +4,7 @@
 #include <iostream>
 #include <chrono>
 #include <string>
+#include <vector>
 
 #include "../logger/Logger.hpp"
 #include "../Config.hpp"
@@ -62,7 +63,7 @@ class NPC {
 
     SDL_Rect getRect();
 
-    void detectCollision(SDL_Rect);
+    bool detectCollision(SDL_Rect);
 
     bool compareRect(SDL_Rect temp);
 };  

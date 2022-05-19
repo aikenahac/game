@@ -48,8 +48,10 @@ SDL_Rect NPC::getRect() {
   return render;
 }
 
-void NPC::detectCollision(SDL_Rect enemy) {
+bool NPC::detectCollision(SDL_Rect enemy) {
   SDL_bool collision = SDL_HasIntersection(&render, &enemy);
+
+  return collision;
 }
 
 void NPC::movement(SDL_Rect target) {
