@@ -246,12 +246,14 @@ void Player::autoMove() {
 
   if (data.is_open()) {
     while (data.read((char*) &temp, sizeof(Coordinates))) {
-      this->setDirection(0);
-      this->walking(true);
+      this->walking(false);
+
       this->render.x = temp.x;
       this->render.y = temp.y;
 
       std::cout << "x: " << render.x << ", y: " << render.y << "\n";
+    
+      this->draw();
     }
   }
 

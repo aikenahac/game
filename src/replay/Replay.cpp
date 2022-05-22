@@ -10,9 +10,6 @@ void Replay::initialize(SDL_Renderer* renderer) {
 
 void Replay::start() {
   map.draw();
-  player.draw();
-
-  player.walking(true);
   player.autoMove();
 }
 

@@ -3,6 +3,7 @@
 #include <SDL2/SDL.h>
 #include <iostream>
 #include <chrono>
+#include <thread>
 #include <string>
 #include <vector>
 #include <algorithm>
@@ -13,6 +14,9 @@
 #include "../npc/NPC.hpp"
 #include "../animal/Animal.hpp"
 #include "../utils/Utils.hpp"
+#include "../map/Map.hpp"
+
+class Map;
 
 class Player {
   private:
