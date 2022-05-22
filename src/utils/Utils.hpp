@@ -8,6 +8,11 @@ struct Save {
   int score;
 };
 
+struct Coordinates {
+	int x;
+	int y;
+};
+
 class Utils {
   public:
     static void renderText(

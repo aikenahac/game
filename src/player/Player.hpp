@@ -6,11 +6,13 @@
 #include <string>
 #include <vector>
 #include <algorithm>
+#include <fstream>
 
 #include "../logger/Logger.hpp"
 #include "../Config.hpp"
 #include "../npc/NPC.hpp"
 #include "../animal/Animal.hpp"
+#include "../utils/Utils.hpp"
 
 class Player {
   private:
@@ -66,6 +68,8 @@ class Player {
 		void moveLeft();
 		void moveRight();
 
+		void autoMove();
+
 		void setSpeed(int);
 		void removeLife();
 		void addLife();
@@ -80,4 +84,6 @@ class Player {
 		bool detectCollection(SDL_Rect, Animal*, std::vector<Animal*>);
 
 		void resetLives();
+
+		void saveLocation();
 };

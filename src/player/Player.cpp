@@ -22,7 +22,7 @@ void Player::initialize(SDL_Renderer* renderer) {
 	Logger::okay("Initializing player!");
 
 	this->renderer = renderer;
-	
+
 	loadPlayerSprite();
 }
 
@@ -35,7 +35,7 @@ void Player::loadPlayerSprite() {
     std::string temp =  "../assets/character/" + paths[i];
 
     player = SDL_LoadBMP(temp.c_str());
-  
+
     assets[i] = SDL_CreateTextureFromSurface(renderer, player);
   }
 }
@@ -43,8 +43,8 @@ void Player::loadPlayerSprite() {
 void Player::draw() {
   if (isWalking) {
     timeNow = std::chrono::system_clock::now();
-		
-		if((timeNow - lastFrame).count() > 100000000){
+
+		if((timeNow - lastFrame).count() > 100000000) {
 			switch (direction) {
 			case 0:
 			case 3:
@@ -109,6 +109,8 @@ void Player::moveUp() {
 
   this->render.y -= speed;
   detectBorderCollision();
+
+  saveLocation();
 }
 
 void Player::moveDown() {
@@ -117,6 +119,8 @@ void Player::moveDown() {
 
   this->render.y += speed;
   detectBorderCollision();
+
+  saveLocation();
 }
 
 void Player::moveLeft() {
@@ -125,6 +129,8 @@ void Player::moveLeft() {
 
   this->render.x -= speed;
   detectBorderCollision();
+
+  saveLocation();
 }
 
 void Player::moveRight() {
@@ -133,6 +139,8 @@ void Player::moveRight() {
 
   this->render.x += speed;
   detectBorderCollision();
+
+  saveLocation();
 }
 
 int Player::getLives() {
@@ -208,10 +216,44 @@ void Player::resetLives() {
 
 void Player::moveOnAllyCollide(SDL_Rect npc) {
   if (render.x < npc.x || render.y < npc.y) {
-    render.x -= speed; 
-    render.y -= speed; 
+    render.x -= speed;
+    render.y -= speed;
   } else if (render.x > npc.x || render.y > npc.y) {
-    render.x += speed; 
-    render.y += speed; 
+    render.x += speed;
+    render.y += speed;
   }
+}
+
+void Player::saveLocation() {
+  std::ofstream dataWrite("../Replay.bin", std::ios::binary | std::ios::app);
+
+  Coordinates newCoords;
+
+  newCoords.x = render.x;
+  newCoords.y = render.y;
+
+  if (dataWrite.is_open()) {
+    dataWrite.write((char*) &newCoords, sizeof(Coordinates));
+  }
+
+  dataWrite.close();
+}
+
+void Player::autoMove() {
+  std::ifstream data("../Replay.bin", std::ios::binary);
+
+  Coordinates temp;
+
+  if (data.is_open()) {
+    while (data.read((char*) &temp, sizeof(Coordinates))) {
+      this->setDirection(0);
+      this->walking(true);
+      this->render.x = temp.x;
+      this->render.y = temp.y;
+
+      std::cout << "x: " << render.x << ", y: " << render.y << "\n";
+    }
+  }
+
+  data.close();
 }

@@ -24,7 +24,7 @@ void Leaderboard::loadScores() {
   if (data.is_open()) {
 		int ctr = 0;
 
-  	while (data.read((char *) &curr, sizeof(Save))) {
+  	while (data.read((char *) &curr, sizeof(Save)) && ctr < 5) {
 			char player[100];
 			std::strcpy(player, curr.player);
 			

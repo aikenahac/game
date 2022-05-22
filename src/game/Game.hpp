@@ -18,8 +18,10 @@
 #include "../menu/Menu.hpp"
 #include "../game/GameOver.hpp"
 #include "../game/Victory.hpp"
+#include "../game/Paused.hpp"
 #include "../animal/Animal.hpp"
 #include "../leaderboard/Leaderboard.hpp"
+#include "../replay/Replay.hpp"
 #include "../utils/Utils.hpp"
 
 class Game {
@@ -37,6 +39,8 @@ class Game {
     GameOver goScreen;
     Victory victoryScreen;
     Leaderboard leaderboard;
+    Replay replay;
+    Paused paused;
 
     std::vector<Ally*> allies;
     std::vector<Enemy*> enemies;
@@ -48,6 +52,9 @@ class Game {
     bool justDied = false;
     bool justWon = false;
     bool showLeaderboard = false;
+    bool runningReplay = false;
+
+    bool isPaused = false;
 
     int level = 0;
 
@@ -83,7 +90,8 @@ class Game {
 
     void victory();
 
-    void addEntities(int alliesCount, int enemiesCount, int animalsCount);
+    void runReplay();
+
     void cleanEntities();
 
     void updateScore(int score);

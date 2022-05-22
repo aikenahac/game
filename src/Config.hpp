@@ -15,6 +15,8 @@
 #define GAME_SCREEN 2
 #define VICTORY_SCREEN 3
 #define LEADERBOARD_SCREEN 4
+#define REPLAY_SCREEN 5
+#define PAUSED_SCREEN 6
 
 #define START 0
 #define LEADERBOARD 1

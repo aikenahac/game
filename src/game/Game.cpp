@@ -15,7 +15,7 @@ Game::Game(bool fullscreen) {
         SDL_WINDOWPOS_CENTERED,
         WIDTH,
         HEIGHT,
-        fullscreen ? SDL_WINDOW_FULLSCREEN : SDL_WINDOW_SHOWN
+        fullscreen ? SDL_WINDOW_FULLSCREEN | SDL_WINDOW_SHOWN : SDL_WINDOW_SHOWN
         );
 
     if (window == NULL) {
@@ -45,7 +45,10 @@ void Game::run() {
 	menu.initialize(renderer);
 	goScreen.initialize(renderer);
 	victoryScreen.initialize(renderer);
+  paused.initialize(renderer);
   leaderboard.initialize(renderer);
+
+  replay.initialize(renderer);
 
   player.initialize(renderer);
   map.initialize(renderer);
@@ -94,10 +97,12 @@ void Game::run() {
 
     handleKeyboard();
 
-    if (playing) this->setScreen(GAME_SCREEN);
+    if (isPaused) this->setScreen(PAUSED_SCREEN);
+    else if (playing) this->setScreen(GAME_SCREEN);
 		else if (justDied) this->setScreen(GAME_OVER_SCREEN);
     else if (justWon) this->setScreen(VICTORY_SCREEN);
     else if (showLeaderboard) this->setScreen(LEADERBOARD_SCREEN);
+    else if (runningReplay) this->setScreen(REPLAY_SCREEN);
 		else this->setScreen(HOME_SCREEN);
 
     SDL_RenderPresent(renderer);
@@ -115,13 +120,22 @@ void Game::handleKeyboard() {
   if (keys[SDLK_LESS]) player.setSpeed(SPRINT_SPEED);
   if (!keys[SDLK_LESS]) player.setSpeed(WALK_SPEED);
 
-	if (keys[SDLK_c] && (justWon == true || justDied == true || showLeaderboard == true)) {
+	if (keys[SDLK_c] && (justWon == true || justDied == true || showLeaderboard == true || runningReplay == true)) {
 		player.resetLives();
 		justDied = false;
     justWon = false;
     showLeaderboard = false;
+    runningReplay = false;
     score = 0;
 	}
+
+  if (keys[SDLK_p] && isPaused == false) {
+    isPaused = true;
+  } 
+  
+  if (keys[SDLK_r] && isPaused == true) {
+    isPaused = false;
+  }
 
   if (!keys[SDLK_w] && !keys[SDLK_s] && !keys[SDLK_a] && !keys[SDLK_d]) {
     player.walking(false);
@@ -263,9 +277,16 @@ void Game::setScreen(int screen) {
       gameScreen();
       break;
     case LEADERBOARD_SCREEN:
-      // this->loadScores();
       SDL_RenderClear(renderer);
       leaderboard.draw();
+      break;
+    case REPLAY_SCREEN:
+      SDL_RenderClear(renderer);
+      replay.start();
+      break;
+    case PAUSED_SCREEN:
+      SDL_RenderClear(renderer);
+      paused.draw();
       break;
   }
 }
@@ -273,14 +294,14 @@ void Game::setScreen(int screen) {
 void Game::select() {
 	switch (menu.getSelection()) {
 		case START:
+      replay.clear();
 			playing = true;
 			break;
     case LEADERBOARD:
-      // loadScores();
       showLeaderboard = true;
       break;
 		case LOAD_REPLAY:
-			isRunning = false;
+			runningReplay = true;
 			break;
 		case QUIT:
 			isRunning = false;
@@ -326,32 +347,6 @@ void Game::cleanEntities() {
   }
 }
 
-void Game::addEntities(int alliesCount, int enemiesCount, int animalsCount) {
-  for (int i = 0; i < alliesCount; i++) {
-    Ally *ally = new Ally();
-
-    ally->initialize(renderer);
-
-    allies.push_back(ally);
-  }
-
-  for (int i = 0; i < enemiesCount; i++) {
-    Enemy *enemy = new Enemy();
-
-    enemy->initialize(renderer);
-
-    enemies.push_back(enemy);
-  }
-
-  for (int i = 0; i < animalsCount; i++) {
-    Animal *animal = new Animal();
-
-    animal->initialize(renderer);
-
-    animals.push_back(animal);
-  }
-}
-
 void Game::saveScore() {
   std::string msg = "Saving " + this->playerName + "'s score of ";
 
@@ -370,7 +365,7 @@ void Game::saveScore() {
     bool written = false;
 
     while(dataRead.read((char *) &temp, sizeof(Save))) {
-      if (!written) {
+      if (newSave.score > temp.score && !written) {
         dataWrite.write((char*)&newSave, sizeof(Save));
         written = true;
       }

@@ -20,6 +20,8 @@ add_executable(
   src/game/Game.hpp
   src/game/GameOver.cpp
   src/game/GameOver.hpp
+  src/game/Paused.hpp
+  src/game/Paused.cpp
   src/health_bar/HealthBar.cpp
   src/health_bar/HealthBar.hpp
   src/logger/Logger.cpp
@@ -38,6 +40,8 @@ add_executable(
   src/leaderboard/Leaderboard.cpp
   src/utils/Utils.hpp
   src/utils/Utils.cpp
+  src/replay/Replay.hpp
+  src/replay/Replay.cpp
 )
 
 include_directories(
